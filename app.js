@@ -6,7 +6,7 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 
 const app = express();
-const users = require('./routes/users');
+const users = require('./routes/Users');
 const port = 3000;
 const config = require('./config/database');
 
