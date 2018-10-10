@@ -46,6 +46,6 @@ app.get('/test', (req, res) => {
   res.send('Testing Testing 3');
 })
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log('Server started on port '+ port);
 })
