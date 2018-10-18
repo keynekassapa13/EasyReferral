@@ -13,7 +13,7 @@ const hospitals = require('./routes/Hospitals');
 const referrals = require('./routes/Referrals');
 const schedules = require('./routes/Schedules');
 const frontend = require('./routes/Frontend');
-const port = 3000;
+const port = process.env.PORT || 3000;
 const config = require('./config/database');
 
 const server = http.createServer(app);
