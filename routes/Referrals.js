@@ -25,7 +25,8 @@ router.post('/addReferral', (req, res, next) => {
     description: req.body.description,
     gp_id: req.body.gp_id,
     state: req.body.state,
-    physician_id: req.body.physician_id
+    physician_id: req.body.physician_id,
+    category: req.body.category
   });
 
   Referral.addReferral( newReferral, (err, Referral)=>{
@@ -40,7 +41,7 @@ router.post('/addReferral', (req, res, next) => {
 // Get all Referrals
 router.get('/referralList', function(req, res){
   console.log('test');
-  Referral.find({}, ['name', 'patient_name', 'patient_address', 'patient_phonum', 'patient_dob', 'description', 'gp_id', 'state', 'physician_id', 'created_at'], function(err,Referrals){
+  Referral.find({}, ['name', 'patient_name', 'patient_address', 'patient_phonum', 'patient_dob', 'description', 'gp_id', 'state', 'physician_id', 'created_at', 'category'], { sort: {created_at: -1}} ,function(err,Referrals){
     var ReferralMap = {};
 
     Referrals.forEach(function(Referral) {
@@ -51,10 +52,38 @@ router.get('/referralList', function(req, res){
   });
 });
 
+// Get state 1 = waiting
+router.get('/referwait', function(req, res){
+  Referral.find({'state':1}, ['name', 'patient_name', 'patient_address', 'patient_phonum', 'patient_dob', 'description', 'gp_id', 'state', 'physician_id', 'created_at', 'category'], { sort: {created_at: -1}} , function(err,Referrals){
+    var ReferralMap = {};
+
+    Referrals.forEach(function(Referral) {
+      ReferralMap[Referral._id] = Referral;
+    });
+
+    res.send(Referrals);
+  });
+});
+
+// Get state 2 = approved
+router.get('/referapproved', function(req, res){
+  console.log('test');
+  Referral.find({'state':2}, ['name', 'patient_name', 'patient_address', 'patient_phonum', 'patient_dob', 'description', 'gp_id', 'state', 'physician_id', 'created_at', 'category'] , { sort: {created_at: -1}}, function(err,Referrals){
+    var ReferralMap = {};
+
+    Referrals.forEach(function(Referral) {
+      ReferralMap[Referral._id] = Referral;
+    });
+
+    res.send(Referrals);
+  });
+});
+
+
 // Delete ReferralS
 router.post('/deleteReferral', (req, res, next) => {
   const d_id = req.body._id;
-  Referral.removeReferralById(d_id, (err, Referral) => {
+  Referral.findByIdAndRemove(d_id, (err, Referral) => {
     res.json({success:true, data: Referral});
   });
 });
@@ -62,7 +91,7 @@ router.post('/deleteReferral', (req, res, next) => {
 // Update Referrals
 router.post('/updateReferral', (req, res, next) => {
   const u_Referral = req.body;
-  Referral.updateReferralById(u_Referral, (err, Referral) => {
+  Referral.findByIdAndUpdate(u_Referral._id, u_Referral, (err, Referral) => {
     res.json({success:true, data: Referral, error: err});
   });
 })

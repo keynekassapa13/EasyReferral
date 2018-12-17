@@ -21,21 +21,31 @@ router.get('/example', function (req, res) {
 
 // referral-detail
 router.get('/gp/referral/:id/backend', function (req, res) {
-  Referral.find({'_id': req.params.id}, ['name', 'patient_name', 'patient_address', 'patient_phonum', 'patient_dob', 'description', 'gp_id', 'state', 'physician_id', 'created_at'], function(err,Referrals){
+  Referral.find({'_id': req.params.id}, ['name', 'patient_name', 'patient_address', 'patient_phonum', 'patient_dob', 'description', 'gp_id', 'state', 'physician_id', 'created_at', 'category'], function(err,Referrals){
     res.send(Referrals);
   });
 })
 
-
 router.get('/physician/referral/:id/backend', function (req, res) {
-  Referral.find({'_id': req.params.id}, ['name', 'patient_name', 'patient_address', 'patient_phonum', 'patient_dob', 'description', 'gp_id', 'state', 'physician_id', 'created_at'], function(err,Referrals){
+  Referral.find({'_id': req.params.id}, ['name', 'patient_name', 'patient_address', 'patient_phonum', 'patient_dob', 'description', 'gp_id', 'state', 'physician_id', 'created_at', 'category'], function(err,Referrals){
     res.send(Referrals);
   });
+})
+
+router.get('/physician/referral-wait/:id/backend', function (req, res) {
+  Referral.find({'_id': req.params.id}, ['name', 'patient_name', 'patient_address', 'patient_phonum', 'patient_dob', 'description', 'gp_id', 'state', 'physician_id', 'created_at', 'category'], function(err,Referrals){
+    res.send(Referrals);
+  });
+})
+
+router.get('/chat/:id/backend', function (req, res) {
+  res.send({'id':req.params.id})
 })
 
 router.use('/', express.static(path.join(__dirname, '../public')));
 router.use('/signup', express.static(path.join(__dirname, '../public/signup.html')));
 router.use('/login', express.static(path.join(__dirname, '../public/login.html')));
+router.use('/aboutus', express.static(path.join(__dirname, '../public/aboutus.html')));
 router.use('/chat/*', express.static(path.join(__dirname, '../public/chatpage.html')));
 
 router.get('/gp', function(req, res, next){
@@ -56,6 +66,7 @@ router.use('/physician/referral', express.static(path.join(__dirname, '../public
 router.use('/physician/all-referral', express.static(path.join(__dirname, '../public/physician/all-history.html')));
 router.use('/physician/schedule', express.static(path.join(__dirname, '../public/physician/schedule.html')));
 router.use('/physician/profile', express.static(path.join(__dirname, '../public/physician/profile.html')));
+router.use('/physician/referral-wait/*', express.static(path.join(__dirname, '../public/physician/referral-detail-waiting.html')));
 router.use('/physician/referral/*', express.static(path.join(__dirname, '../public/physician/referral-detail.html')));
 
 module.exports = router;

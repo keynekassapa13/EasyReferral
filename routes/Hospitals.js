@@ -14,6 +14,8 @@ const jwt = require('jsonwebtoken');
 const Hospital = require('../models/Hospital');
 const config = require('../config/database');
 
+
+
 //Register
 router.post('/addHospital', (req, res, next) => {
   let newHospital = new Hospital({
@@ -45,10 +47,19 @@ router.get('/hospitalList', function(req, res){
   });
 });
 
+// get hospital info
+router.post('/hospitalinfo', function (req, res){
+  const u_id = req.body.id;
+
+  Hospital.find({'_id':u_id}, ['name', 'address'], function(err,hospital){
+    res.send(hospital);
+  })
+});
+
 // Delete HospitalS
 router.post('/deleteHospital', (req, res, next) => {
   const d_id = req.body._id;
-  Hospital.removeHospitalById(d_id, (err, Hospital) => {
+  Hospital.findByIdAndRemove(d_id, (err, Hospital) => {
     res.json({success:true, data: Hospital});
   });
 });
@@ -56,7 +67,7 @@ router.post('/deleteHospital', (req, res, next) => {
 // Update Hospitals
 router.post('/updateHospital', (req, res, next) => {
   const u_Hospital = req.body;
-  Hospital.updateHospitalById(u_Hospital, (err, Hospital) => {
+  Hospital.findByIdAndUpdate(u_Hospital._id, u_Hospital, (err, Hospital) => {
     res.json({success:true, data: Hospital});
   });
 })

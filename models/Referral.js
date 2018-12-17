@@ -48,6 +48,10 @@ const ReferralSchema = mongoose.Schema({
   physician_id: {
     type: Schema.Types.ObjectId,
     ref: 'User'
+  },
+  category: {
+    type: String,
+    required: true
   }
 
 }, {timestamps: { createdAt: 'created_at' }});
@@ -76,7 +80,8 @@ module.exports.updateReferralById = function(u_referral, callback){
     description: u_referral.description,
     gp_id: u_referral.gp_id,
     state: u_referral.state,
-    physician_id: u_referral.physician_id
+    physician_id: u_referral.physician_id,
+    category: u_referral.category
   };
   console.log(condition);
   Referral.findByIdAndUpdate(

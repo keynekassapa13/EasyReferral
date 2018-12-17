@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+  base_url = 'https://easyreferral.herokuapp.com/';
+  // base_url = 'http://localhost:3000/';
+
   function setCookie(name,value,days) {
     var expires = "";
     if (days) {
@@ -33,7 +36,7 @@ $(document).ready(function() {
       console.log('masuk');
 
       $.ajax({
-        url: 'http://localhost:3000/users/authenticate',
+        url: base_url + 'users/authenticate',
         type: 'POST',
         dataType: 'json',
         data: {
@@ -61,7 +64,7 @@ $(document).ready(function() {
     $('#signup-menu').addClass('active');
 
     $.ajax({
-      url: 'http://localhost:3000/hospital/hospitallist',
+      url: base_url + 'hospital/hospitallist',
       type: 'GET',
       dataType: 'json',
       success: function(result){
@@ -97,7 +100,7 @@ $(document).ready(function() {
       hospitalId = $('.chosen-hospital .hidden._id').text();
 
       $.ajax({
-        url: 'http://localhost:3000/users/register',
+        url: base_url + 'users/register',
         type: 'POST',
         dataType: 'json',
         data: {
@@ -112,7 +115,7 @@ $(document).ready(function() {
           "hospitalId": hospitalId
         },
         success: function(result){
-          $.getScript("/assets/third-party/notice/jbox.notice.js", function(){
+          $.getScript("/assets/third-party/Notice/jBox.Notice.js", function(){
             console.log('masjk2');
             setTimeout(function(){
               new jBox('Notice', {
@@ -137,6 +140,16 @@ $(document).ready(function() {
 
   } else if ( $('.container').hasClass('home')) {
     $('#home-menu').addClass('active');
+  } else if ( $('.container').hasClass('aboutus')) {
+    $('#about-menu').addClass('active');
+  } else if ( $('.container').hasClass('chat')) {
+    $.ajax({
+      url: window.location.href + '/backend',
+      method: 'GET',
+      success: function(result){
+        $('.ref-title').text('Chat Referral #' + result["id"])
+      }
+    })
   }
 
 
